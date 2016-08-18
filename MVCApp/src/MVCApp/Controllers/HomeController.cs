@@ -10,6 +10,7 @@ namespace MVCApp.Controllers
     {
         public IActionResult Index()
         {
+            ViewData["Title"] = "Employee Portal";
             return View();
         }
 
