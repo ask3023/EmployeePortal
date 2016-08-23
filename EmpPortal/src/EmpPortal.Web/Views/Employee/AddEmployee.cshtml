@@ -1,10 +1,77 @@
-﻿@{ 
+﻿@model EmpPortal.Common.ViewModels.EmployeeViewModel
+@{ 
     ViewData["Title"] = "Employee Portal";
 }
 
 <div>
-    <h1 class="page-header">Add Employee</h1>
+    <form asp-controller="Employee" asp-action="Add" method="post">
+        <h1 class="page-header">Add Employee</h1>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="col-sm-4">
+                    <label asp-for="FirstName"></label>
+                </div>
+                <div class="col-sm-8">
+                    <input asp-for="FirstName" type="text" />
+                </div>
+            </div>
 
-   All fields to read employee information
+            <div class="col-sm-6">
+                <div class="col-sm-4">
+                    <label asp-for="LastName"></label>
+                </div>
+                <div class="col-sm-8">
+                    <input asp-for="LastName" type="text" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="col-sm-4">
+                    <label asp-for="DateOfBirth"></label>
+                </div>
+                <div class="col-sm-8">
+                    <input asp-for="DateOfBirth" type="date" />
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="col-sm-4">
+                    <label asp-for="DateOfJoining"></label>
+                </div>
+                <div class="col-sm-8">
+                    <input asp-for="DateOfJoining" type="date" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="col-sm-4">
+                    <label asp-for="PrimaryEmail"></label>
+                </div>
+                <div class="col-sm-8">
+                    <input asp-for="PrimaryEmail" type="email" />
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="col-sm-4">
+                    <label asp-for="SecondaryEmail"></label>
+                </div>
+                <div class="col-sm-8">
+                    <input asp-for="SecondaryEmail" type="email" />
+                </div>
+            </div>
+        </div>
 
+        <br />
+
+        <div class="row">
+            <div class="col-sm-8">
+            </div>
+            <div class="col-sm-4 right">
+                <button type="submit">Submit</button>
+            </div>
+        </div>
+    </form>
 </div>
