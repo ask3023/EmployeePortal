@@ -3,11 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MVCApp.Infrastructure;
+using Microsoft.Extensions.Logging;
 
 namespace MVCApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+        public HomeController(ILoggerFactory loggerFactory) : base(loggerFactory)
+        {
+
+        }
+
         public IActionResult Index()
         {
             ViewData["Title"] = "Employee Portal";
