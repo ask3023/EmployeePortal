@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
+using MVCApp.Infrastructure;
 
 namespace MVCApp
 {
@@ -43,7 +44,8 @@ namespace MVCApp
             services.AddMvc();
 
             // log setup
-            ILoggerFactory loggerFactory = new LoggerFactory();
+            ApplicationLogger.LoggerFactory = new LoggerFactory();
+            ILoggerFactory loggerFactory = ApplicationLogger.LoggerFactory;
 
             if(_env.IsDevelopment())
             {

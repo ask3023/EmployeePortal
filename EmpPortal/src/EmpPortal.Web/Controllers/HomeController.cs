@@ -10,7 +10,7 @@ namespace MVCApp.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(ILoggerFactory loggerFactory) : base(loggerFactory)
+        public HomeController()
         {
 
         }

@@ -11,8 +11,9 @@ namespace MVCApp.Infrastructure
     {
         public ILogger Logger;
 
-        public BaseController(ILoggerFactory loggerFactory)
+        public BaseController()
         {
+            var loggerFactory = ApplicationLogger.LoggerFactory;
             Logger = loggerFactory.CreateLogger(this.GetType());
         }
     }

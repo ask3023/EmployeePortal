@@ -13,9 +13,8 @@ namespace MVCApp.Controllers
 {
     public class EmployeeController : BaseController
     {
-        public EmployeeController(ILoggerFactory loggerFactory) : base(loggerFactory)
+        public EmployeeController()
         {
-
         }
 
         // GET: /<controller>/

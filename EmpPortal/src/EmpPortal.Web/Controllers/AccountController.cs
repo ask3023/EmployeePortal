@@ -12,7 +12,7 @@ namespace MVCApp.Controllers
 {
     public class AccountController : BaseController
     {
-        public AccountController(ILoggerFactory loggerFactory) : base(loggerFactory)
+        public AccountController()
         {
 
         }
