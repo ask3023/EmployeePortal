@@ -41,8 +41,6 @@ namespace MVCApp
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddMvc();
-
             // log setup
             ApplicationServices.LoggerFactory = new LoggerFactory();
             ILoggerFactory loggerFactory = ApplicationServices.LoggerFactory;
@@ -63,6 +61,10 @@ namespace MVCApp
             // Config
             ApplicationServices.Configuration = Configuration;
             services.AddSingleton<IConfiguration>(Configuration);
+
+            // setup MVC
+            var mvcBuilder = services.AddMvc();
+            mvcBuilder.AddMvcOptions(o => o.Filters.Add(new GlobalExceptionHandler(loggerFactory)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
