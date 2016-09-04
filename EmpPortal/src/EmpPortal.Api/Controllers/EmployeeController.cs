@@ -4,13 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EmpPortal.Common.ViewModels;
+using EmpPortal.Api.Infrastructure;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace EmpPortal.Api.Controllers
 {
     [Route("api/Employee")]
-    public class EmployeeController : Controller
+    public class EmployeeController : BaseController
     {
         // GET: returns all employees
         [HttpGet]
@@ -41,6 +43,8 @@ namespace EmpPortal.Api.Controllers
             List<EmployeeViewModel> response = new List<EmployeeViewModel>()
             { emp1, emp2};
 
+            Logger.LogInformation("Employees found: " + response.Count);
+
             return Ok(response);
         }
 
@@ -56,6 +60,7 @@ namespace EmpPortal.Api.Controllers
         public void Post([FromBody]EmployeeViewModel newEmployee)
         {
             //TODO: call employee service to push the new employee into database
+            Logger.LogInformation("Employee added to the system");
         }
 
         // PUT: updates employee

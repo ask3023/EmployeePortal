@@ -1,19 +1,24 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using EmpPortal.Api.Infrastructure;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 
 namespace EmpPortal.Api
 {
     public class Startup
     {
+        private IHostingEnvironment _env;
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
 
             if (env.IsEnvironment("Development"))
             {
@@ -21,8 +26,8 @@ namespace EmpPortal.Api
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
-            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+            _env = env;
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -34,15 +39,44 @@ namespace EmpPortal.Api
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc();
+
+            // log setup
+            ApplicationServices.LoggerFactory = new LoggerFactory();
+            ILoggerFactory loggerFactory = ApplicationServices.LoggerFactory;
+
+            if (_env.IsDevelopment())
+            {
+                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+                loggerFactory.AddDebug();
+            }
+            else
+            {
+                loggerFactory.AddNLog();
+                _env.ConfigureNLog("nlog.config");
+            }
+
+            services.AddSingleton<ILoggerFactory>(loggerFactory);
+
+            // Config
+            ApplicationServices.Configuration = Configuration;
+            services.AddSingleton<IConfiguration>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             app.UseApplicationInsightsRequestTelemetry();
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                // app.UseBrowserLink();
+            }
+            else
+            {
+                app.UseDeveloperExceptionPage();
+                // app.UseExceptionHandler("/Home/Error");
+            }
 
             app.UseApplicationInsightsExceptionTelemetry();
 
