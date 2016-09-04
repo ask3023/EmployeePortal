@@ -13,7 +13,7 @@ namespace MVCApp.Infrastructure
 
         public BaseController()
         {
-            var loggerFactory = ApplicationLogger.LoggerFactory;
+            var loggerFactory = ApplicationServices.LoggerFactory;
             Logger = loggerFactory.CreateLogger(this.GetType());
         }
     }

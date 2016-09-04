@@ -44,8 +44,8 @@ namespace MVCApp
             services.AddMvc();
 
             // log setup
-            ApplicationLogger.LoggerFactory = new LoggerFactory();
-            ILoggerFactory loggerFactory = ApplicationLogger.LoggerFactory;
+            ApplicationServices.LoggerFactory = new LoggerFactory();
+            ILoggerFactory loggerFactory = ApplicationServices.LoggerFactory;
 
             if(_env.IsDevelopment())
             {
@@ -59,6 +59,10 @@ namespace MVCApp
             }
 
             services.AddSingleton<ILoggerFactory>(loggerFactory);
+
+            // Config
+            ApplicationServices.Configuration = Configuration;
+            services.AddSingleton<IConfiguration>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

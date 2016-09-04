@@ -17,21 +17,27 @@ namespace MVCApp.Controllers
         {
         }
 
-        // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Search()
         {
-            ViewData["Data"] = "Add employee here...";
-            // throw new InvalidOperationException("Invalid operation is being performed...");
-            Logger.LogError("Employee controller called...");
+            var result = await HttpHelper.GetAsync<List<EmployeeViewModel>>(@"api/employee");
+
+            ViewData.Model = result;
+
+            return View("Search");
+        }
+
+        public async Task<IActionResult> Add()
+        {
+            // Logger.LogError("Employee controller called...");
 
             return View("AddEmployee");
         }
 
         [HttpPost]
-        public IActionResult Add(EmployeeViewModel employeeViewModel)
+        public async Task<IActionResult> Add(EmployeeViewModel employeeViewModel)
         {
-            throw new InvalidOperationException("Invalid operation is being performed...");
-            
+            bool isAdded = await HttpHelper.PostAsync<EmployeeViewModel>(@"api/employee", employeeViewModel);
+
             return View("AddEmployee");
         }
     }
