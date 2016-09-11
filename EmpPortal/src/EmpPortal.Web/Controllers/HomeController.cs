@@ -12,7 +12,6 @@ namespace MVCApp.Controllers
     {
         public HomeController()
         {
-
         }
 
         public IActionResult Index()

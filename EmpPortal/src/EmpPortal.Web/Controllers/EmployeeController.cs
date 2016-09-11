@@ -21,22 +21,20 @@ namespace MVCApp.Controllers
         {
             var result = await HttpHelper.GetAsync<List<EmployeeViewModel>>(@"api/employee");
 
-            ViewData.Model = result;
+            ViewData.Model = result.ResponseModel;
 
             return View("Search");
         }
 
         public async Task<IActionResult> Add()
         {
-            // Logger.LogError("Employee controller called...");
-
             return View("AddEmployee");
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(EmployeeViewModel employeeViewModel)
         {
-            bool isAdded = await HttpHelper.PostAsync<EmployeeViewModel>(@"api/employee", employeeViewModel);
+            var response = await HttpHelper.PostAsync<EmployeeViewModel>(@"api/employee", employeeViewModel);
 
             return View("AddEmployee");
         }

@@ -9,12 +9,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using MVCApp.Infrastructure;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using MVCApp.Controllers;
 
 namespace MVCApp
 {
     public class Startup
     {
         private IHostingEnvironment _env;
+        private IContainer _container;
 
         public Startup(IHostingEnvironment env)
         {
@@ -36,8 +40,10 @@ namespace MVCApp
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            var containerBuilder = new ContainerBuilder();
+
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
@@ -57,14 +63,22 @@ namespace MVCApp
             }
 
             services.AddSingleton<ILoggerFactory>(loggerFactory);
+            // services.AddScoped<ILogIdentifier>(c => new LogIdentifier());
 
-            // Config
+            // config setup
             ApplicationServices.Configuration = Configuration;
             services.AddSingleton<IConfiguration>(Configuration);
 
-            // setup MVC
+            // MVC setup
             var mvcBuilder = services.AddMvc();
             mvcBuilder.AddMvcOptions(o => o.Filters.Add(new GlobalExceptionHandler(loggerFactory)));
+
+            containerBuilder.Populate(services);
+            containerBuilder.Register<ILogIdentifier>(c => new LogIdentifier()).InstancePerLifetimeScope();
+            _container = containerBuilder.Build();
+            ApplicationServices.Container = _container;
+
+            return new AutofacServiceProvider(_container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
