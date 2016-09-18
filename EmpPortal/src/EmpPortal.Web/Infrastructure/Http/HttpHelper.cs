@@ -15,17 +15,18 @@ namespace MVCApp.Infrastructure
     {
         private readonly HttpClient _httpClient;
         private readonly IEmpLogger _httpLogger;
+        private ILogIdentifier _logIdentifier;
 
         public HttpHelper()
         {
-            var accessor = ApplicationServices.Container.Resolve<IHttpContextAccessor>();
-            var context = accessor.HttpContext;
-            var resolved = (ILogIdentifier)context.RequestServices.GetService(typeof(ILogIdentifier));
+            var httpContextAccessor = ApplicationServices.Container.Resolve<IHttpContextAccessor>();
+            var httpContext = httpContextAccessor.HttpContext;
+            _logIdentifier = (ILogIdentifier)httpContext.RequestServices.GetService(typeof(ILogIdentifier));
 
             var loggerFactory = ApplicationServices.LoggerFactory;
                 _httpLogger = new EmpLogger(
                     loggerFactory.CreateLogger<HttpHelper>(),
-                    resolved
+                    _logIdentifier
                     );
 
             string baseUrl = ApplicationServices.Configuration["ApiConnection:BaseUrl"];
@@ -33,7 +34,8 @@ namespace MVCApp.Infrastructure
             _httpClient.BaseAddress = new Uri(baseUrl);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+            _httpClient.DefaultRequestHeaders.Add("X-LogIdentifier", _logIdentifier.LogId.ToString());
+            
             _httpLogger.LogInformation("API Base url - " + baseUrl);
         }
 

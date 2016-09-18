@@ -22,7 +22,7 @@ namespace EmpPortal.Api.Controllers
 
             var emp1 = new EmployeeViewModel()
             {
-                FirstName = "Mahesh",
+                FirstName = "Ramesh",
                 LastName = "Babu",
                 DateOfBirth = DateTime.Now.AddYears(-30),
                 DateOfJoining = DateTime.Now.AddYears(-2),

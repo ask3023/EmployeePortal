@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Autofac;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,12 +11,19 @@ namespace EmpPortal.Api.Infrastructure
 {
     public class BaseController : Controller
     {
-        public ILogger Logger;
+        public IEmpLogger Logger;
 
         public BaseController()
         {
             var loggerFactory = ApplicationServices.LoggerFactory;
-            Logger = loggerFactory.CreateLogger(this.GetType());
+            var accessor = ApplicationServices.Container.Resolve<IHttpContextAccessor>();
+            var context = accessor.HttpContext;
+            var logIdentifier = (ILogIdentifier)context.RequestServices.GetService(typeof(ILogIdentifier));
+
+            Logger = new EmpLogger(
+                    loggerFactory.CreateLogger(this.GetType()),
+                    logIdentifier
+                    );
         }
     }
 }

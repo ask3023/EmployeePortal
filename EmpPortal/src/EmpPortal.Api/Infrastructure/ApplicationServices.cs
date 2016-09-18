@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Autofac;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,7 @@ namespace EmpPortal.Api.Infrastructure
         public static ILoggerFactory LoggerFactory { get; set; }
 
         public static IConfiguration Configuration { get; set; }
+
+        public static IContainer Container { get; set; } 
     }
 }

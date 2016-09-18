@@ -18,7 +18,9 @@
     "EmpPortal.Common": "1.0.0-*",
     "NLog.Extensions.Logging": "1.0.0-*",
     "NLog.Schema": "4.3.7",
-    "Microsoft.AspNetCore.Diagnostics": "1.0.0"
+    "Microsoft.AspNetCore.Diagnostics": "1.0.0",
+    "Autofac": "4.1.0",
+    "Autofac.Extensions.DependencyInjection": "4.0.0"
   },
 
   "tools": {

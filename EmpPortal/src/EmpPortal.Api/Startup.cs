@@ -1,16 +1,22 @@
-﻿using EmpPortal.Api.Infrastructure;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using EmpPortal.Api.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
+using System;
 
 namespace EmpPortal.Api
 {
     public class Startup
     {
         private IHostingEnvironment _env;
+        private IContainer _container;
 
         public Startup(IHostingEnvironment env)
         {
@@ -33,8 +39,10 @@ namespace EmpPortal.Api
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            var containerBuilder = new ContainerBuilder();
+
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
@@ -62,6 +70,13 @@ namespace EmpPortal.Api
             // setup MVC
             var mvcBuilder = services.AddMvc();
             mvcBuilder.AddMvcOptions(o => o.Filters.Add(new GlobalExceptionHandler(loggerFactory)));
+
+            containerBuilder.Populate(services);
+            containerBuilder.Register<ILogIdentifier>(c => new LogIdentifier()).InstancePerLifetimeScope();
+            _container = containerBuilder.Build();
+            ApplicationServices.Container = _container;
+
+            return new AutofacServiceProvider(_container);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
@@ -79,6 +94,8 @@ namespace EmpPortal.Api
                 app.UseDeveloperExceptionPage();
                 // app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseLogIdentifier();
 
             app.UseApplicationInsightsExceptionTelemetry();
 
