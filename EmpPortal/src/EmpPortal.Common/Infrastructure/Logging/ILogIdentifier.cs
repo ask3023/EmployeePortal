@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCApp.Infrastructure
+namespace EmpPortal.Common.Infrastructure
 {
     public interface ILogIdentifier
     {
         Guid LogId { get; }
+        void SetLogId(Guid logId);
     }
 }

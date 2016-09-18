@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCApp.Infrastructure
+namespace EmpPortal.Common.Infrastructure
 {
     public class LogIdentifier : ILogIdentifier
     {
@@ -19,6 +19,11 @@ namespace MVCApp.Infrastructure
         public Guid LogId
         {
             get; private set;
+        }
+
+        public void SetLogId(Guid logId)
+        {
+            LogId = logId;
         }
     }
 }

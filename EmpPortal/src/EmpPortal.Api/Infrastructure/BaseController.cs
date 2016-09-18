@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using EmpPortal.Common.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

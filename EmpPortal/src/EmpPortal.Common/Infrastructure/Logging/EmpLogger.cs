@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace MVCApp.Infrastructure
+namespace EmpPortal.Common.Infrastructure
 {
     public class EmpLogger : IEmpLogger
     {

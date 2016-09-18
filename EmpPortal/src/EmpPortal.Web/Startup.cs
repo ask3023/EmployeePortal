@@ -12,6 +12,7 @@ using MVCApp.Infrastructure;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using MVCApp.Controllers;
+using EmpPortal.Common.Infrastructure;
 
 namespace MVCApp
 {

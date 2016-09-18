@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmpPortal.Api.Infrastructure
+namespace EmpPortal.Common.Infrastructure
 {
     /// <summary>
     /// Use this exception to notify any known business exceptions

@@ -3,6 +3,9 @@
 
   "dependencies": {
     "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+    "Microsoft.AspNetCore.Mvc.Abstractions": "1.0.0",
+    "Microsoft.Extensions.Logging": "1.0.0",
+    "Microsoft.Extensions.Logging.Abstractions": "1.0.0",
     "NETStandard.Library": "1.6.0",
     "System.ComponentModel.Annotations": "4.1.0"
   },
